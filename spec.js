@@ -31,7 +31,8 @@ const filterEl = function(css) {
           return text !== "" 
         });
       });
-}
+};
+const fadDropdown = element(by.id('fad-dropdown'));
 
 describe('UVU Find A Doctor Page', function() {
     it('should check that all Navbar buttons are there', function() {
@@ -44,8 +45,8 @@ describe('UVU Find A Doctor Page', function() {
     }); //Done
 
     it('should check to make sure doctor search and dropdown are there', function() {
-        expect(element(by.model('query')).isPresent()).toBe(true);
-        expect(element(by.model('primarySwitch')).isPresent()).toBe(true);
+        expect(element(by.css('input')).isPresent()).toBe(true);
+        expect(fadDropdown.isPresent()).toBe(true);
     }); //Done
 
     // // it('should search for the name Wendy and only display doctors with the name Wendy', function() {
@@ -54,36 +55,38 @@ describe('UVU Find A Doctor Page', function() {
     // // });
 
     it('should check that both options are in the first dropdown', function() {
-        element(by.model('primarySwitch')).click();
-        allOptions = element.all(by.model('primarySwitch')).$$('option')
+        fadDropdown.click();
+        allOptions = element(by.id('fad-dropdown')).$$('option')
         expect(allOptions.getText()).toEqual(['-- Please Select --', 'Primary Care Provider', 'Specialist'])
     }); //Done
 
     it('should check that a search bar appears when Specialist is selected', function() {
-        element(by.model('primarySwitch')).click();
+        fadDropdown.click();
         element(by.cssContainingText('option', 'Specialist')).click();
-        expect(element(by.model('searchStr')).isPresent()).toBe(true)
+        expect(element.all(by.css('input')).last().isPresent()).toBe(true)
     }); //Done
 
     it('should check that all options are present in the "specializes in" dropdown', function() {
-        element(by.model('primarySwitch')).click();
+        browser.get(fadpage)
+
+        fadDropdown.click();
         element(by.cssContainingText('option', 'Primary Care Provider')).click();
-        element(by.model('primaryCare')).click();
-        allOptions = element.all(by.model('primaryCare')).$$('option')
+        element.all(by.css('[ng-change="primarySelected(primaryCare)"]')).click();
+        allOptions = element.all(by.css('[ng-change="primarySelected(primaryCare)"]')).$$('option')
         expect(allOptions.getText()).toEqual([ '-- Please Select --', 'Family Medicine', 'Family Nurse Practitioner', 'General Pediatrics', 'Geriatrics', 'Internal Medicine, General', 'Internal Medicine/Pediatrics', 'OB/GYN Nurse Practitioner', 'OB/Gyn, General', 'Physician Assistant', 'Preventive Medicine', 'Women and Children\'s Health', 'Women\'s Health Care Nurse Practitioner' ]);
     });
 
     it('should check that all filter options are present', function() {
         browser.get(fadpage);
 
-        element(by.model('primarySwitch')).click();
+        fadDropdown.click();
         element(by.cssContainingText('option', 'Primary Care Provider')).click();
-        element(by.model('primaryCare')).click();
+        element(by.css('[ng-change="primarySelected(primaryCare)"]')).click();
         element(by.cssContainingText('option', 'Family Medicine')).click()
-        expect(element(by.model('location')).isPresent()).toBe(true)
-        expect(element(by.model('gender.male')).isPresent()).toBe(true)
-        expect(element(by.model('gender.female')).isPresent()).toBe(true)
-        expect(element(by.model('language')).isPresent()).toBe(true)
+        expect(element(by.css('[ng-change="locSelected()"]')).isPresent()).toBe(true)
+        expect(element(by.css('[ng-true-value="\'Male\'"]')).isPresent()).toBe(true)
+        expect(element(by.css('[ng-true-value="\'Female\'"]')).isPresent()).toBe(true)
+        expect(element(by.css('[ng-change="langSelected()"]')).isPresent()).toBe(true)
     }); //Done
 
     // it('should check that there are 10 options in the language dropdown', function() {

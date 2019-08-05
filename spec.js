@@ -1,4 +1,4 @@
-// 1. Is Navbar There - 
+// 1. Is Navbar There - DONE
     // There should be 6 buttons in the navbar: Home button, Find a doctor, Services, Locations, Patients & Visitors, & MyChart.
 // 2. Is Main Search There - DONE
     // There should be a search bar & a dropdown in the large container.
@@ -40,7 +40,8 @@ describe('UVU Find A Doctor Page', function() {
         expect(element(by.className('o-nav__logo')).isPresent()).toBe(true);
         filterEl('.o-nav__link')
         expect(el.getText()).toEqual(['FIND A DOCTOR', 'SERVICES', 'LOCATIONS', 'PATIENTS & VISITORS', 'BILLING & INSURANCE', 'MY\nCHART']);
-    });
+        expect(element(by.className('o-nav__item')).isPresent()).toBe(true)
+    }); //Done
 
     it('should check to make sure doctor search and dropdown are there', function() {
         expect(element(by.model('query')).isPresent()).toBe(true);
